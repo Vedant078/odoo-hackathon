@@ -1,0 +1,73 @@
+# ==============================================================================
+# BACKEND: Python / FastAPI / SQLModel
+# ==============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.htmlcov/
+htmlcov/
+
+# Python Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+
+# Environment Variables & Local Secrets (Crucial for Postgres credentials)
+.env
+.env.*
+!.env.example # Keep this file unignored so your team knows what variables to configure
+
+# SQLModel / Alembic Database Migrations
+# (Keep your migration versions, but ignore local SQLite or DB dump files if any)
+*.db
+*.sqlite3
+*.sql
+
+
+# ==============================================================================
+# FRONTEND: Node / React
+# ==============================================================================
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Build and Production outputs
+build/
+dist/
+out/
+.next/
+
+# Frontend Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Local environment variables
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+
+# ==============================================================================
+# SYSTEM & IDE
+# ==============================================================================
+# macOS specific files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor / IDE configs (VS Code configuration)
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
