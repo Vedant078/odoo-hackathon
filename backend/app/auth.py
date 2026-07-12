@@ -9,23 +9,19 @@ from dotenv import load_dotenv
 from app.database import get_session
 from app.models import User, Role
 
-# Load variables from the .env file
 load_dotenv()
 
-router = APIRouter(prefix="/auth", tags=["Authentication"])
+router = APIRouter(prefix="/auth", tags=["AUTHENTICATION"])
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/auth/login")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# Decoupled configurations pulled straight from .env
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
-
 def create_access_token(email: str) -> str:
     expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     return jwt.encode({"sub": email, "exp": expire}, SECRET_KEY, algorithm=ALGORITHM)
-
 
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_session)) -> User:
     credentials_exception = HTTPException(
@@ -42,12 +38,9 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
         raise credentials_exception
 
     user = db.exec(select(User).where(User.email == email)).first()
-    if not user:
+    if not user or user.status != "Active":
         raise credentials_exception
-    if user.status != "Active":
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="This account has been deactivated.")
     return user
-
 
 class RoleGuard:
     def __init__(self, allowed_roles: list[str]):
@@ -59,7 +52,6 @@ class RoleGuard:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access denied by RBAC rule safety guard.")
         return current_user
 
-
 @router.post("/login")
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_session)):
     user = db.exec(select(User).where(User.email == form_data.username)).first()
@@ -67,36 +59,48 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
         raise HTTPException(status_code=400, detail="Incorrect email or password")
     if user.status != "Active":
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="This account has been deactivated.")
-    token = create_access_token(user.email)
-    return {"access_token": token, "token_type": "bearer"}
+    return {"access_token": create_access_token(user.email), "token_type": "bearer"}
 
+@router.post("/users", dependencies=[Depends(RoleGuard(["Fleet Manager"]))])
+def create_user(user_data: dict, db: Session = Depends(get_session)):
+    if "email" not in user_data or "password" not in user_data or "role_id" not in user_data:
+        raise HTTPException(status_code=400, detail="Missing email, password, or role_id parameter.")
+
+    existing_user = db.exec(select(User).where(User.email == user_data["email"])).first()
+    if existing_user:
+        raise HTTPException(status_code=400, detail="User with this email already exists.")
+    
+    new_user = User(
+        email=user_data["email"],
+        hashed_password=pwd_context.hash(user_data["password"]),
+        role_id=user_data["role_id"],
+        status="Active"
+    )
+    
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return {"id": new_user.id, "email": new_user.email, "role_id": new_user.role_id, "status": new_user.status}
 
 @router.get("/users", dependencies=[Depends(RoleGuard(["Fleet Manager"]))])
 def get_users(db: Session = Depends(get_session)):
     users = db.exec(select(User)).all()
     return [{"id": u.id, "email": u.email, "role_id": u.role_id, "status": u.status} for u in users]
 
-
 @router.patch("/users/{user_id}", dependencies=[Depends(RoleGuard(["Fleet Manager"]))])
 def update_user(user_id: int, user_data: dict, db: Session = Depends(get_session)):
     user = db.get(User, user_id)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
-    
-    if "email" in user_data:
-        user.email = user_data["email"]
-    if "role_id" in user_data:
-        user.role_id = user_data["role_id"]
-    if "status" in user_data:
-        user.status = user_data["status"]
-    if "password" in user_data:
-        user.hashed_password = pwd_context.hash(user_data["password"])
-        
+    for key, value in user_data.items():
+        if key == "password":
+            user.hashed_password = pwd_context.hash(value)
+        elif hasattr(user, key):
+            setattr(user, key, value)
     db.add(user)
     db.commit()
     db.refresh(user)
     return {"id": user.id, "email": user.email, "role_id": user.role_id, "status": user.status}
-
 
 @router.delete("/users/{user_id}", dependencies=[Depends(RoleGuard(["Fleet Manager"]))])
 def delete_user(user_id: int, db: Session = Depends(get_session)):
