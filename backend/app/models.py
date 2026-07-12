@@ -44,7 +44,6 @@ class User(SQLModel, table=True):
     email: str = Field(unique=True, index=True)
     hashed_password: str
     role_id: int = Field(foreign_key="roles.id")
-    status: str = Field(default="Active")
 
 class Vehicle(SQLModel, table=True):
     __tablename__ = "vehicles"
@@ -115,42 +114,3 @@ class Expense(SQLModel, table=True):
     amount: float
     expense_date: date = Field(default_factory=date.today)
     description: Optional[str] = None
-
-# ==========================================
-# UPDATE SCHEMAS (PATCH Requests)
-# ==========================================
-
-from pydantic import BaseModel
-
-class VehicleUpdate(BaseModel):
-    registration_number: Optional[str] = None
-    vehicle_name: Optional[str] = None
-    vehicle_type: Optional[str] = None
-    max_load_capacity: Optional[float] = None
-    odometer: Optional[float] = None
-    acquisition_cost: Optional[float] = None
-    status: Optional[VehicleStatus] = None
-
-class DriverUpdate(BaseModel):
-    full_name: Optional[str] = None
-    license_number: Optional[str] = None
-    license_category: Optional[str] = None
-    license_expiry: Optional[date] = None
-    phone: Optional[str] = None
-    safety_score: Optional[float] = None
-    status: Optional[DriverStatus] = None
-
-class TripUpdate(BaseModel):
-    source: Optional[str] = None
-    destination: Optional[str] = None
-    vehicle_id: Optional[int] = None
-    driver_id: Optional[int] = None
-    cargo_weight: Optional[float] = None
-    planned_distance: Optional[float] = None
-    actual_distance: Optional[float] = None
-    revenue: Optional[float] = None
-    start_time: Optional[datetime] = None
-    end_time: Optional[datetime] = None
-    fuel_consumed: Optional[float] = None
-    csat_score: Optional[float] = None
-    status: Optional[TripStatus] = None
