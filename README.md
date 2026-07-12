@@ -1,84 +1,83 @@
+# TransitOps
 
-
-
-# Odoo Hackathon 2026
-
-Welcome to the project repository for the Odoo Hackathon 2026 virtual round. This application is built using a modern, high-performance stack optimized for rapid feature delivery and robust data handling.
+TransitOps is a high-performance fleet logistics and operations dashboard designed to eliminate operational inefficiencies, compliance safety risks, maintenance oversights, and financial blind spots.
 
 ---
 
-## The Team
-* **Vedant Limbasiya** (Team Leader)
-* **Daksh Modi**
-* **Laksh Patel**
-* **Shlok Varu**
+## 🚀 Tech Stack
 
-**Assigned Evaluator:** Dhruvkumar Rajendrasinh Chauhan
+*   **Frontend**: React.js (Vite, Tailwind CSS, Lucide Icons, Recharts)
+*   **Backend**: FastAPI (Python 3.10+, SQLModel, SQLite/PostgreSQL)
+*   **Database & ORM**: SQLModel (SQLAlchemy) & PostgreSQL
 
 ---
 
-## Tech Stack
-* **Frontend:** React.js (Tailwind CSS)
-* **Backend:** FastAPI (Python)
-* **Database & ORM:** PostgreSQL & SQLModel
+## 🛠️ Key Features
+
+*   **Role-Based Access Control (RBAC)**: Custom permissions and interfaces tailored for Fleet Managers, Drivers, Dispatchers, and Safety Officers.
+*   **Asset Management**: Real-time tracking of trucks, delivery vans, and logistics transport assets.
+*   **Operations Engine**: Strict automated status transition workflows for dispatching and completing trips.
+*   **Maintenance Workspaces**: Tracking of active and scheduled vehicle diagnostic repairs.
+*   **Financial Analytics**: Automatic calculation of vehicle ROI, operational expense distributions, and fleet performance insights.
 
 ---
 
-## Problem Statement & Solution
-
-* **Selected Problem:** 
-Logistics companies frequently rely on fragmented spreadsheets and manual logbooks to track their operations. This manual approach introduces critical operational inefficiencies:
-1) **Scheduling Conflicts & Low Utilization:** Inefficient tracking leads to double-booked assets or underutilized vehicles.
-2)   **Compliance & Safety Risks:** High risk of assigning drivers with expired licenses or suspended statuses.
-3)   **Maintenance Oversights:** Lack of automated status tracking results in missed vehicle servicing and unexpected breakdowns.
-4)  **Financial Blind Spots:** Inaccurate logging of fuel, maintenance, and toll expenses makes calculating accurate vehicle ROI impossible.
- ### Our Solution: 
-Key Features:
-*   **Role-Based Access Control (RBAC):** Tailored interfaces and permissions for Fleet Managers, Drivers, Safety Officers, and Financial Analysts.
-*   **Automated State Management:** Strict status transitions (e.g., dispatching a trip instantly updates both driver and vehicle to `On Trip`; logging maintenance pushes a vehicle to `In Shop` and removes it from the dispatch pool).
-*   **Automated Business Rule Enforcement:** Built-in validation checks for cargo weight limits, license expirations, and asset availability prior to dispatch.
-*   **Financial & Operational Intelligence:** A comprehensive dashboard tracking key metrics like Fleet 
-
----
-
-## Team Git Workflow (Read Before Coding!)
-
-To prevent merge conflicts and ensure our main branch remains clean and runnable, please follow this strict workflow:
-
-### 1. Synchronize Local Code
-Before beginning any new feature or task, always pull the latest updates from GitHub:
-```bash
-git checkout main
-git pull
+## 📦 Project Structure
 
 ```
-
-### 2. Feature-Based Branching
-
-Never write code directly on the main branch. Create a descriptive feature branch for your work:
-
-```bash
-# For backend development tasks:
-git checkout -b backend-feature-name
-
-# For frontend UI/UX tasks:
-git checkout -b frontend-feature-name
-
+├── backend/                  # FastAPI app codebase
+│   └── app/
+│       ├── database.py       # DB engine and session configuration
+│       ├── models.py         # DB entity models and enums
+│       ├── auth.py           # JWT security & user administration
+│       ├── routers/          # Route modules (fleet, ops, finance)
+│       └── main.py           # Application entrypoint
+└── FRONTEND_1/               # React + Vite frontend
+    ├── src/
+    │   ├── app/              # Router, providers, and layout structure
+    │   ├── components/       # Reusable UI & Chart components
+    │   ├── features/         # Page modules (booking, assets, reports, etc.)
+    │   └── utils/            # API client and constants
+    └── package.json
 ```
-
-### 3. Push and Open a Pull Request
-
-When your feature is complete and runs locally without errors, push your branch and open a Pull Request (PR) on GitHub:
-
-```bash
-git add .
-git commit -m "feat: short description of what you added"
-git push -u origin your-branch-name
-
-```
-
-*Notify the team leader to review, resolve any conflicts, and merge your code into main.*
 
 ---
 
+## 🔧 Setup & Installation
 
+### Backend Setup
+1. Navigate to the backend directory:
+   ```bash
+   cd backend
+   ```
+2. Set up a virtual environment and install dependencies:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   pip install fastapi sqlmodel uvicorn python-jose[cryptography] passlib[bcrypt] python-dotenv
+   ```
+3. Create a `.env` file in `backend/` and configure:
+   ```env
+   DATABASE_URL=sqlite:///./database.db
+   SECRET_KEY=your-super-secret-key-change-it
+   ALGORITHM=HS256
+   ACCESS_TOKEN_EXPIRE_MINUTES=60
+   ```
+4. Start the FastAPI server:
+   ```bash
+   uvicorn app.main:app --reload --port 8000
+   ```
+
+### Frontend Setup
+1. Navigate to the frontend directory:
+   ```bash
+   cd FRONTEND_1
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the local development server:
+   ```bash
+   npm run dev
+   ```
