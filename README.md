@@ -37,8 +37,7 @@ Key Features:
 *   **Role-Based Access Control (RBAC):** Tailored interfaces and permissions for Fleet Managers, Drivers, Safety Officers, and Financial Analysts.
 *   **Automated State Management:** Strict status transitions (e.g., dispatching a trip instantly updates both driver and vehicle to `On Trip`; logging maintenance pushes a vehicle to `In Shop` and removes it from the dispatch pool).
 *   **Automated Business Rule Enforcement:** Built-in validation checks for cargo weight limits, license expirations, and asset availability prior to dispatch.
-*   **Financial & Operational Intelligence:** A comprehensive dashboard tracking key metrics like Fleet Utilization and automated Vehicle ROI calculations:
-    $$\text{Vehicle ROI} = \frac{\text{Revenue} - (\text{Maintenance} + \text{Fuel})}{\text{Acquisition Cost}}$$
+*   **Financial & Operational Intelligence:** A comprehensive dashboard tracking key metrics like Fleet 
 
 ---
 
