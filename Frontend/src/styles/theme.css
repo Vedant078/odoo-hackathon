@@ -1,0 +1,84 @@
+:root {
+  /* Fonts */
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  --font-display: 'Outfit', var(--font-sans);
+
+  /* Shared Light Mode Theme */
+  --background-raw: 255, 255, 255;
+  --surface-raw: 248, 250, 252;
+  --surface-card-raw: 255, 255, 255;
+  --text-primary-raw: 15, 23, 42;
+  --text-secondary-raw: 71, 85, 105;
+  --text-muted-raw: 148, 163, 184;
+
+  --color-primary: #4f46e5;      /* Indigo 600 */
+  --color-primary-hover: #4338ca;
+  --color-primary-light: #e0e7ff;
+  --color-success: #10b981;      /* Emerald 500 */
+  --color-success-light: #d1fae5;
+  --color-warning: #f59e0b;      /* Amber 500 */
+  --color-warning-light: #fef3c7;
+  --color-danger: #ef4444;       /* Red 500 */
+  --color-danger-light: #fee2e2;
+  --color-info: #06b6d4;         /* Cyan 500 */
+  --color-info-light: #ecfeff;
+
+  --border-color: #e2e8f0;
+  --border-color-hover: #cbd5e1;
+  --input-bg: #ffffff;
+  
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 15px rgba(79, 70, 229, 0.15);
+
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme='dark'] {
+  --background-raw: 15, 23, 42;       /* Slate 900 */
+  --surface-raw: 9, 15, 29;
+  --surface-card-raw: 30, 41, 59;      /* Slate 800 */
+  --text-primary-raw: 248, 250, 252;
+  --text-secondary-raw: 148, 163, 184;
+  --text-muted-raw: 100, 116, 139;
+
+  --color-primary: #6366f1;      /* Indigo 500 */
+  --color-primary-hover: #4f46e5;
+  --color-primary-light: rgba(99, 102, 241, 0.15);
+  --color-success: #34d399;      /* Emerald 400 */
+  --color-success-light: rgba(52, 211, 153, 0.15);
+  --color-warning: #fbbf24;      /* Amber 400 */
+  --color-warning-light: rgba(251, 191, 36, 0.15);
+  --color-danger: #f87171;       /* Red 400 */
+  --color-danger-light: rgba(248, 113, 113, 0.15);
+  --color-info: #22d3ee;         /* Cyan 400 */
+  --color-info-light: rgba(34, 211, 238, 0.15);
+
+  --border-color: #334155;        /* Slate 700 */
+  --border-color-hover: #475569;
+  --input-bg: #1e293b;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 15px rgba(99, 102, 241, 0.25);
+}
+
+/* Color Getters */
+:root {
+  --bg-color: rgb(var(--background-raw));
+  --surface-color: rgb(var(--surface-raw));
+  --card-color: rgb(var(--surface-card-raw));
+  --text-primary: rgb(var(--text-primary-raw));
+  --text-secondary: rgb(var(--text-secondary-raw));
+  --text-muted: rgb(var(--text-muted-raw));
+}
