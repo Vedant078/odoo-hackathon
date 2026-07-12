@@ -1,5 +1,5 @@
 from datetime import date
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session, select, func
 from app.database import get_session
 from app.models import FuelLog, Expense, Vehicle, MaintenanceLog, Trip, TripStatus
@@ -8,6 +8,20 @@ router = APIRouter(tags=["Financial Insights & Metrics"])
 
 @router.post("/fuel-logs")
 def add_fuel_receipt(log: FuelLog, db: Session = Depends(get_session)):
+    # Verify vehicle exists
+    vehicle = db.get(Vehicle, log.vehicle_id)
+    if not vehicle:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, 
+            detail=f"Vehicle with ID {log.vehicle_id} not found."
+        )
+
+    # Input validations
+    if log.liters <= 0:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Fuel liters must be greater than zero.")
+    if log.fuel_cost < 0:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Fuel cost cannot be negative.")
+
     db.add(log)
     db.commit()
     db.refresh(log)
@@ -15,6 +29,18 @@ def add_fuel_receipt(log: FuelLog, db: Session = Depends(get_session)):
 
 @router.post("/expenses")
 def add_general_expense(expense: Expense, db: Session = Depends(get_session)):
+    # Verify vehicle exists
+    vehicle = db.get(Vehicle, expense.vehicle_id)
+    if not vehicle:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, 
+            detail=f"Vehicle with ID {expense.vehicle_id} not found."
+        )
+
+    # Input validation
+    if expense.amount < 0:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Expense amount cannot be negative.")
+
     db.add(expense)
     db.commit()
     db.refresh(expense)
