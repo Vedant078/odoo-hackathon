@@ -26,8 +26,19 @@ Welcome to the project repository for the Odoo Hackathon 2026 virtual round. Thi
 
 ## Problem Statement & Solution
 
-* **Selected Problem:** []
-* **Our Solution:** [ brief 2-3 sentence summary of what we are building]
+* **Selected Problem:** 
+Logistics companies frequently rely on fragmented spreadsheets and manual logbooks to track their operations. This manual approach introduces critical operational inefficiencies:
+1) **Scheduling Conflicts & Low Utilization:** Inefficient tracking leads to double-booked assets or underutilized vehicles.
+2)   **Compliance & Safety Risks:** High risk of assigning drivers with expired licenses or suspended statuses.
+3)   **Maintenance Oversights:** Lack of automated status tracking results in missed vehicle servicing and unexpected breakdowns.
+4)  **Financial Blind Spots:** Inaccurate logging of fuel, maintenance, and toll expenses makes calculating accurate vehicle ROI impossible.
+ ### Our Solution: 
+Key Features:
+*   **Role-Based Access Control (RBAC):** Tailored interfaces and permissions for Fleet Managers, Drivers, Safety Officers, and Financial Analysts.
+*   **Automated State Management:** Strict status transitions (e.g., dispatching a trip instantly updates both driver and vehicle to `On Trip`; logging maintenance pushes a vehicle to `In Shop` and removes it from the dispatch pool).
+*   **Automated Business Rule Enforcement:** Built-in validation checks for cargo weight limits, license expirations, and asset availability prior to dispatch.
+*   **Financial & Operational Intelligence:** A comprehensive dashboard tracking key metrics like Fleet Utilization and automated Vehicle ROI calculations:
+    $$\text{Vehicle ROI} = \frac{\text{Revenue} - (\text{Maintenance} + \text{Fuel})}{\text{Acquisition Cost}}$$
 
 ---
 
