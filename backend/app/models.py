@@ -44,6 +44,7 @@ class User(SQLModel, table=True):
     email: str = Field(unique=True, index=True)
     hashed_password: str
     role_id: int = Field(foreign_key="roles.id")
+    status: str = Field(default="Active")
 
 class Vehicle(SQLModel, table=True):
     __tablename__ = "vehicles"
